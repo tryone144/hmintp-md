@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Bernd Busse
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<resources>
+
+    <string name="app_name">HMINTP - Measuring Device</string>
+
+    <!-- MenuItem titles -->
+    <string name="menu_item_help">Help</string>
+    <string name="menu_item_about">About</string>
+    <string name="menu_action_share">Share</string>
+    
+    <!-- SplashFragment texts -->
+    <string name="splash_text_title">How much I need to poop measuring device</string>
+    <string name="splash_banner_start">Startup</string>
+    <string name="splash_button_start">Start Meassure!</string>
+    
+    <!-- InputFragment texts -->
+    <string name="input_label_header">Following data is necessary:</string>
+    <string name="input_divider_desc"></string>
+    
+    <string name="input_label_lasttime">How long ago did you poop?</string>
+    <string name="input_hint_lasttime">in hours</string>
+    <string name="input_label_masseaten">How much did you eat?</string>
+    <string name="input_hint_masseaten">in gramm</string>
+    <string name="input_label_bodymass">How much do you weight?</string>
+    <string name="input_hint_bodymass">in kilogramm</string>
+    
+    <string name="input_button_calculate">Calculate!</string>
+    
+    <!-- ResultFragment texts -->
+    <string name="result_wait">Calculate Energydensity&#8230;</string>
+    <string name="result_empty">0.0 kDoil</string>
+    <string name="result_nolevel">Nothing, absolutely nothing!</string>
+    
+    <!-- DialogFragment titles / Button titles -->
+    <string name="dialog_help_title">Help</string>
+    <string name="dialog_about_title">About</string>
+    <string name="dialog_error_title">Error</string>
+    <string name="dialog_info_title">Info</string>
+    <string name="dialog_close">Close</string>
+    <string name="dialog_info">Info</string>
+
+    <!-- ShareAction texts -->
+    <string name="share_name">How much I need to poop</string>
+    <string name="share_msg_value">Meassured the need to poop of about %1$s kDoil.</string>
+    <string name="share_msg_low">Thats %1$s.</string>
+    <string name="share_msg_mid">WOW!!! %1$s</string>
+    <string name="share_msg_high">Our independent assessment: \"%1$s\"</string>
+    
+    <string name="msg_error_missing_input">Error: Please insert all values.</string>
+    
+    <!-- ResultFragment level names -->
+    <string-array name="result_levels">
+        <item>Unharmful</item>
+        <item>Hefty</item>
+        <item>Really big turd!</item>
+        <item>Fasten your seatbelts!</item>
+        <item>Analdetonation!!!</item>
+        <item>Unbeliveable shitstorm!</item>
+        <item>Are you kidding me???</item>
+    </string-array>
+    
+    <!-- SplashFragment messages -->
+    <string-array name="splash_messages">
+        <item>Initialize Device&#8230;</item>
+        <item>Start Darm-Uplink&#8230;</item>
+        <item>Load Graphics&#8230;</item>
+        <item>Search Toiletpaper&#8230;</item>
+        <item>Finished Loading!</item>
+    </string-array>
+    
+    <!-- ErrorDialog titles -->
+    <string-array name="dialog_error_titles">
+        <item>Error 500</item>
+        <item>Error 027</item>
+        <item>Error 400</item>
+        <item>Error 404</item>
+    </string-array>
+    
+    <!-- ErrorDialog messages -->
+    <string-array name="dialog_error_messages">
+        <item>Internal Runtimeerror!</item>
+        <item>Darm-Uplink faulty"</item>
+        <item>Found version for blind men!</item>
+        <item>Toiletpaper not found!</item>
+    </string-array>
+
+</resources>
