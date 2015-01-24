@@ -20,6 +20,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,23 +29,24 @@ import android.view.ViewGroup;
 import de.busse_apps.hmintpmd.R;
 
 public class ErrorDialogFragment extends DialogFragment {
-    
+
     public static final String ARG_TITLE = "de.busse_apps.hmintpmd.gui.ErrorDialogFragment.title";
     public static final String ARG_MESSAGE = "de.busse_apps.hmintpmd.gui.ErrorDialogFragment.message";
     private static final String INFO_DIALOG_TAG = "de.busse_apps.hmintpmd.gui.InfoDialogFragment";
-    
+
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        
+
         builder.setTitle(getArguments().getString(ARG_TITLE));
         builder.setMessage(getArguments().getString(ARG_MESSAGE));
         builder.setNegativeButton(R.string.dialog_close, new onButtonCloseClickListener());
         builder.setNeutralButton(R.string.dialog_info, new onButtonInfoClickListener());
-        
+
         return builder.create();
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getDialog() != null) {
@@ -53,7 +55,7 @@ public class ErrorDialogFragment extends DialogFragment {
         }
         return super.onCreateView(inflater, container, savedInstanceState);
     }
-    
+
     /**
      * DialogInterface.OnClickListener for close button
      */
@@ -64,7 +66,7 @@ public class ErrorDialogFragment extends DialogFragment {
             getActivity().finish();
         }
     }
-    
+
     /**
      * DialogInterface.OnClickListener for info button
      */

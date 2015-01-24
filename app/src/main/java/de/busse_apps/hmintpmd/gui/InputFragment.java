@@ -30,74 +30,74 @@ import de.busse_apps.hmintpmd.common.WSIKMCalculator;
 
 public class InputFragment extends Fragment {
 
-	private MainActivity mActivity;
-	private Button mButtonCalculate;
-	
-	private EditText mFieldLasttime;
-	private EditText mFieldMasseaten;
-	private EditText mFieldBodymass;
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
-	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_input, container, false);
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		mActivity = (MainActivity) getActivity();
-		
-		mButtonCalculate = (Button) getView().findViewById(R.id.input_button_calculate);
-		mButtonCalculate.setOnClickListener(new onButtonCalculateClickListener());
-		
-		mFieldLasttime = (EditText) getView().findViewById(R.id.input_field_lasttime);
-		mFieldMasseaten = (EditText) getView().findViewById(R.id.input_field_masseaten);
-		mFieldBodymass = (EditText) getView().findViewById(R.id.input_field_bodymass);
-	}
-	
-	private boolean checkInput() {
-		String lastTime = mFieldLasttime.getText().toString();
-		String masseaten = mFieldMasseaten.getText().toString();
-		String bodymass = mFieldBodymass.getText().toString();
-		
-		if (lastTime.equals("")) {
-			mFieldLasttime.requestFocus();
-			Toast.makeText(getActivity(), R.string.msg_error_missing_input, Toast.LENGTH_SHORT).show();
-			return false;
-		} else if (masseaten.equals("")) {
-			mFieldMasseaten.requestFocus();
-			Toast.makeText(getActivity(), R.string.msg_error_missing_input, Toast.LENGTH_SHORT).show();
-			return false;
-		} else if (bodymass.equals("") || Double.valueOf(bodymass) == 0.0) {
-			mFieldBodymass.requestFocus();
-			Toast.makeText(getActivity(), R.string.msg_error_missing_input, Toast.LENGTH_SHORT).show();
-			return false;
-		} else {
-			return true;
-		}
-	}
+    private MainActivity mActivity;
+    private Button mButtonCalculate;
 
-	private double evaluateInput() {
-		double lastTime = Double.valueOf(mFieldLasttime.getText().toString());
-		double massEaten = Double.valueOf(mFieldMasseaten.getText().toString());
-		double bodymass = Double.valueOf(mFieldBodymass.getText().toString());
-		return WSIKMCalculator.calculate(lastTime, massEaten, bodymass);
-	}
-	
-	private class onButtonCalculateClickListener implements View.OnClickListener {
-		@Override
+    private EditText mFieldLasttime;
+    private EditText mFieldMasseaten;
+    private EditText mFieldBodymass;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_input, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mActivity = (MainActivity) getActivity();
+
+        mButtonCalculate = (Button) getView().findViewById(R.id.input_button_calculate);
+        mButtonCalculate.setOnClickListener(new onButtonCalculateClickListener());
+
+        mFieldLasttime = (EditText) getView().findViewById(R.id.input_field_lasttime);
+        mFieldMasseaten = (EditText) getView().findViewById(R.id.input_field_masseaten);
+        mFieldBodymass = (EditText) getView().findViewById(R.id.input_field_bodymass);
+    }
+
+    private boolean checkInput() {
+        String lastTime = mFieldLasttime.getText().toString();
+        String masseaten = mFieldMasseaten.getText().toString();
+        String bodymass = mFieldBodymass.getText().toString();
+
+        if (lastTime.equals("")) {
+            mFieldLasttime.requestFocus();
+            Toast.makeText(getActivity(), R.string.msg_error_missing_input, Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (masseaten.equals("")) {
+            mFieldMasseaten.requestFocus();
+            Toast.makeText(getActivity(), R.string.msg_error_missing_input, Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (bodymass.equals("") || Double.valueOf(bodymass) == 0.0) {
+            mFieldBodymass.requestFocus();
+            Toast.makeText(getActivity(), R.string.msg_error_missing_input, Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private double evaluateInput() {
+        double lastTime = Double.valueOf(mFieldLasttime.getText().toString());
+        double massEaten = Double.valueOf(mFieldMasseaten.getText().toString());
+        double bodymass = Double.valueOf(mFieldBodymass.getText().toString());
+        return WSIKMCalculator.calculate(lastTime, massEaten, bodymass);
+    }
+
+    private class onButtonCalculateClickListener implements View.OnClickListener {
+        @Override
         public void onClick(View v) {
-			if (checkInput()) {
-				double value = evaluateInput();
-				mActivity.openResultFragment(value);
-			}
-		}
-	}
+            if (checkInput()) {
+                double value = evaluateInput();
+                mActivity.openResultFragment(value);
+            }
+        }
+    }
 
 }

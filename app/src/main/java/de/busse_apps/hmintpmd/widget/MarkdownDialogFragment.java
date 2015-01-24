@@ -16,26 +16,26 @@ package de.busse_apps.hmintpmd.widget;
  * limitations under the License.
  */
 
+import android.content.DialogInterface;
+import android.support.v4.app.DialogFragment;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import android.content.DialogInterface;
-import android.support.v4.app.DialogFragment;
-
 import in.uncod.android.bypass.Bypass;
 
 public abstract class MarkdownDialogFragment extends DialogFragment {
-    
+
     protected CharSequence getMessageFromResource(int resId) {
         String rawMessage = "";
-        
+
         Reader bReader = null;
         try {
             bReader = new BufferedReader(new InputStreamReader(getResources()
                     .openRawResource(resId), "UTF8"));
-            
+
             int current;
             while ((current = bReader.read()) != -1) {
                 rawMessage = rawMessage + String.valueOf((char) current);
@@ -49,13 +49,13 @@ public abstract class MarkdownDialogFragment extends DialogFragment {
                 }
             }
         }
-        
+
         Bypass bypass = new Bypass(getActivity());
         CharSequence mdMessage = bypass.markdownToSpannable(rawMessage);
-        
+
         return mdMessage;
     }
-    
+
     public class onButtonCloseClickListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int id) {

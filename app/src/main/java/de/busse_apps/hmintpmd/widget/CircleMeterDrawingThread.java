@@ -19,90 +19,90 @@ package de.busse_apps.hmintpmd.widget;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Paint.Style;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Message;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
-import de.busse_apps.hmintpmd.widget.CircleMeterView.*;
+import de.busse_apps.hmintpmd.widget.CircleMeterView.CircleMeterData;
+import de.busse_apps.hmintpmd.widget.CircleMeterView.CircleMeterHandler;
 
 public class CircleMeterDrawingThread extends Thread {
 
-	private static final String SIS_CURRENT_DEGREE = "de.busse_apps.hmintpmd.widget.CircleMeterDrawingThread.mCurDegree";
-	private static final String SIS_CURRENT_VALUE = "de.busse_apps.hmintpmd.widget.CircleMeterDrawingThread.mCurValue";
-	
-	private double mMaxValue;
-	private double mCurValue;
-	
-	private double mMaxDegree;
-	private double mCurDegree;
-	
-	private int mDegreePerSecond;
+    private static final String SIS_CURRENT_DEGREE = "de.busse_apps.hmintpmd.widget.CircleMeterDrawingThread.mCurDegree";
+    private static final String SIS_CURRENT_VALUE = "de.busse_apps.hmintpmd.widget.CircleMeterDrawingThread.mCurValue";
 
-	private long mLastTime;
-	
-	private boolean mRun = false;
-	
-	private SurfaceHolder mHolder;
-	private CircleMeterHandler mHandler;
-	
-	private int mArcWidth;
-	private int mBorderWidth;
-	
-	private int mColorLow;
-	private int mColorMid;
-	private int mColorHi;
-	
-	private Paint mPaintEmpty;
-	private Paint mPaintGraph;
-	private Paint mPaintBorder;
-	
-	private RectF mDrawingBounds;
+    private double mMaxValue;
+    private double mCurValue;
 
-	public CircleMeterDrawingThread(SurfaceHolder holder, CircleMeterHandler handler, CircleMeterData data) {
-		mHolder = holder;
-		mHandler = handler;
-		mDrawingBounds = new RectF();
-		
-		mArcWidth = data.arcWidth;
-		mBorderWidth = data.borderWidth;
-		mMaxValue = data.maxValue;
-		mMaxDegree = data.maxDegree;
-		mDegreePerSecond = data.degreePerSecond;
+    private double mMaxDegree;
+    private double mCurDegree;
 
-		mColorLow = data.colorLow;
-		mColorMid = data.colorMid;
-		mColorHi = data.colorHi;
-		
-		Paint paint = new Paint();
-		paint.setAntiAlias(true);
-		paint.setStyle(Style.STROKE);
-		
-		mPaintBorder = new Paint(paint);
-		mPaintBorder.setStrokeWidth(mArcWidth + mBorderWidth*2);
-		mPaintBorder.setARGB(255, 0, 0, 0);
+    private int mDegreePerSecond;
 
-		paint.setStrokeWidth(mArcWidth);
-		
-		mPaintEmpty = new Paint(paint);
-		mPaintEmpty.setARGB(255, 255, 255, 255);
+    private long mLastTime;
 
-		mPaintGraph = new Paint(paint);
-		mPaintGraph.setColor(mColorLow);
-	}
-    
-	public void setRunning(boolean running) {
-		mRun = running;
-	}
-	
-	public boolean isRunning() {
-		return mRun;
-	}
-	
+    private boolean mRun = false;
+
+    private SurfaceHolder mHolder;
+    private CircleMeterHandler mHandler;
+
+    private int mArcWidth;
+    private int mBorderWidth;
+
+    private int mColorLow;
+    private int mColorMid;
+    private int mColorHi;
+
+    private Paint mPaintEmpty;
+    private Paint mPaintGraph;
+    private Paint mPaintBorder;
+
+    private RectF mDrawingBounds;
+
+    public CircleMeterDrawingThread(SurfaceHolder holder, CircleMeterHandler handler, CircleMeterData data) {
+        mHolder = holder;
+        mHandler = handler;
+        mDrawingBounds = new RectF();
+
+        mArcWidth = data.arcWidth;
+        mBorderWidth = data.borderWidth;
+        mMaxValue = data.maxValue;
+        mMaxDegree = data.maxDegree;
+        mDegreePerSecond = data.degreePerSecond;
+
+        mColorLow = data.colorLow;
+        mColorMid = data.colorMid;
+        mColorHi = data.colorHi;
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setStyle(Style.STROKE);
+
+        mPaintBorder = new Paint(paint);
+        mPaintBorder.setStrokeWidth(mArcWidth + mBorderWidth * 2);
+        mPaintBorder.setARGB(255, 0, 0, 0);
+
+        paint.setStrokeWidth(mArcWidth);
+
+        mPaintEmpty = new Paint(paint);
+        mPaintEmpty.setARGB(255, 255, 255, 255);
+
+        mPaintGraph = new Paint(paint);
+        mPaintGraph.setColor(mColorLow);
+    }
+
+    public boolean isRunning() {
+        return mRun;
+    }
+
+    public void setRunning(boolean running) {
+        mRun = running;
+    }
+
     public synchronized void restoreState(Bundle savedState) {
         synchronized (mHolder) {
             mCurDegree = savedState.getDouble(SIS_CURRENT_DEGREE);
@@ -111,35 +111,35 @@ public class CircleMeterDrawingThread extends Thread {
     }
 
     public void complete() {
-    	mCurDegree = mMaxDegree;
-    	mCurValue = mMaxValue;
+        mCurDegree = mMaxDegree;
+        mCurValue = mMaxValue;
     }
-    
-	@Override
+
+    @Override
     public void run() {
-		mLastTime = System.currentTimeMillis()+200;
+        mLastTime = System.currentTimeMillis() + 200;
         while (mRun) {
             Canvas canvas = null;
             try {
                 canvas = mHolder.lockCanvas(null);
                 synchronized (mHolder) {
-                	doAnimate();
-                	doUpdate();
+                    doAnimate();
+                    doUpdate();
                     doDraw(canvas);
                 }
-            } catch (NullPointerException e) {
+            } catch (NullPointerException ignored) {
             } finally {
                 // do this in a finally so that if an exception is thrown
-            	// during the above, we don't leave the Surface in an
-            	// inconsistent state
-            	if (canvas != null) {
-                	mHolder.unlockCanvasAndPost(canvas);
-            	}
+                // during the above, we don't leave the Surface in an
+                // inconsistent state
+                if (canvas != null) {
+                    mHolder.unlockCanvasAndPost(canvas);
+                }
             }
         }
-	}
-	
-	public Bundle saveState(Bundle map) {
+    }
+
+    public Bundle saveState(Bundle map) {
         synchronized (mHolder) {
             if (map != null) {
                 map.putDouble(SIS_CURRENT_DEGREE, mCurDegree);
@@ -148,91 +148,92 @@ public class CircleMeterDrawingThread extends Thread {
         }
         return map;
     }
-	
-	public void pause() {
-		setRunning(false);
-		//clearCanvas();
-	}
-    
+
+    public void pause() {
+        setRunning(false);
+        //clearCanvas();
+    }
+
     public void setDrawingBounds(Rect bounds) {
         // synchronized to make sure these all change atomically
         synchronized (mHolder) {
-        	mDrawingBounds.set(bounds);
+            mDrawingBounds.set(bounds);
         }
     }
-    
-    private void clearCanvas() {
-        Canvas canvas = null;
-        try {
-            canvas = mHolder.lockCanvas(null);
-            synchronized (mHolder) {
-                canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
-            }
-        } catch (NullPointerException e) {
-        	// ignore
-        } finally {
-            // do this in a finally so that if an exception is thrown
-        	// during the above, we don't leave the Surface in an
-        	// inconsistent state
-        	if (canvas != null) {
-            	mHolder.unlockCanvasAndPost(canvas);
-        	}
-        }
-    }
-    
-    private void doUpdate() {
-    	if (mMaxDegree == 0.0) {
-    		mCurValue = 0.0;
-    		postProgressUpdate();
-    		return;
-    	}
-    	mCurValue = mMaxValue * (mCurDegree / mMaxDegree);
-    	postProgressUpdate();
-    }
-    
-    private void doAnimate() {
-    	long now = System.currentTimeMillis();
-    	
-    	if (mLastTime > now) {
-    		return;
-    	}
-    	
-    	double elapsed = (now - mLastTime) / 1000.0;
-    	
-    	mCurDegree += mDegreePerSecond * elapsed;
-    	mLastTime = now;
 
-    	if (mCurDegree > mMaxDegree) {
-    		mCurDegree = mMaxDegree;
-    		doUpdate();
-    		postDrawingFinished();
-    		return;
-    	}
-    	
-    	if (mCurDegree > 360) {
-    		mCurDegree = 360;
-    		postDrawingFinished();
-    		return;
-    	}
-    	
+// --Commented out by Inspection START (24.01.15 20:43):
+//    private void clearCanvas() {
+//        Canvas canvas = null;
+//        try {
+//            canvas = mHolder.lockCanvas(null);
+//            synchronized (mHolder) {
+//                canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
+//            }
+//        } catch (NullPointerException e) {
+//        	// ignore
+//        } finally {
+//            // do this in a finally so that if an exception is thrown
+//        	// during the above, we don't leave the Surface in an
+//        	// inconsistent state
+//        	if (canvas != null) {
+//            	mHolder.unlockCanvasAndPost(canvas);
+//        	}
+//        }
+//    }
+// --Commented out by Inspection STOP (24.01.15 20:43)
+
+    private void doUpdate() {
+        if (mMaxDegree == 0.0) {
+            mCurValue = 0.0;
+            postProgressUpdate();
+            return;
+        }
+        mCurValue = mMaxValue * (mCurDegree / mMaxDegree);
+        postProgressUpdate();
     }
-    
+
+    private void doAnimate() {
+        long now = System.currentTimeMillis();
+
+        if (mLastTime > now) {
+            return;
+        }
+
+        double elapsed = (now - mLastTime) / 1000.0;
+
+        mCurDegree += mDegreePerSecond * elapsed;
+        mLastTime = now;
+
+        if (mCurDegree > mMaxDegree) {
+            mCurDegree = mMaxDegree;
+            doUpdate();
+            postDrawingFinished();
+            return;
+        }
+
+        if (mCurDegree > 360) {
+            mCurDegree = 360;
+            postDrawingFinished();
+        }
+
+    }
+
     private void doDraw(Canvas canvas) {
-    	float curDegree = (float)mCurDegree;
-    	
+        float curDegree = (float) mCurDegree;
+
         canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
-    	
-    	canvas.drawArc(mDrawingBounds, 0, 360, false, mPaintBorder);
-    	canvas.drawArc(mDrawingBounds, 0, 360, false, mPaintEmpty);
-    	
-		mPaintGraph.setColor(mColorLow);
+
+        canvas.drawArc(mDrawingBounds, 0, 360, false, mPaintBorder);
+        canvas.drawArc(mDrawingBounds, 0, 360, false, mPaintEmpty);
+
+        mPaintGraph.setColor(mColorLow);
         canvas.drawArc(mDrawingBounds, -90, curDegree, false, mPaintGraph);
-		mPaintGraph.setColor(mColorMid);
-        canvas.drawArc(mDrawingBounds, 30, curDegree-120 < 0 ? 0 : curDegree-120, false, mPaintGraph);
-		mPaintGraph.setColor(mColorHi);
-        canvas.drawArc(mDrawingBounds, 150, curDegree-240 < 0 ? 0 : curDegree-240, false, mPaintGraph);
+        mPaintGraph.setColor(mColorMid);
+        canvas.drawArc(mDrawingBounds, 30, curDegree - 120 < 0 ? 0 : curDegree - 120, false, mPaintGraph);
+        mPaintGraph.setColor(mColorHi);
+        canvas.drawArc(mDrawingBounds, 150, curDegree - 240 < 0 ? 0 : curDegree - 240, false, mPaintGraph);
     }
-    
+
     public void redraw() {
         if (!mRun) {
             Canvas canvas = null;
@@ -242,17 +243,17 @@ public class CircleMeterDrawingThread extends Thread {
                     doDraw(canvas);
                 }
             } catch (NullPointerException e) {
-            	// ignore
+                // ignore
             } finally {
                 // do this in a finally so that if an exception is thrown
-            	// during the above, we don't leave the Surface in an
-            	// inconsistent state
-            	if (canvas != null) {
-                	mHolder.unlockCanvasAndPost(canvas);
-            	}
+                // during the above, we don't leave the Surface in an
+                // inconsistent state
+                if (canvas != null) {
+                    mHolder.unlockCanvasAndPost(canvas);
+                }
             }
         }
-	}
+    }
 
     private void postProgressUpdate() {
         Message msg = mHandler.obtainMessage();
@@ -263,10 +264,10 @@ public class CircleMeterDrawingThread extends Thread {
         msg.setData(b);
         mHandler.sendMessage(msg);
     }
-    
+
     private void postDrawingFinished() {
-		setRunning(false);
-		
+        setRunning(false);
+
         Message msg = mHandler.obtainMessage();
         Bundle b = new Bundle();
         b.putInt(CircleMeterHandler.KEY_EVENT, CircleMeterHandler.EVENT_FINISHED);

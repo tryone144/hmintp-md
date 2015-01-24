@@ -29,69 +29,69 @@ import de.busse_apps.hmintpmd.widget.CircleMeterDrawingThread;
 import de.busse_apps.hmintpmd.widget.CircleMeterView;
 
 public class SplashFragment extends Fragment implements CircleMeterView.CircleMeterCallback {
-    
+
     private static final String SIS_SHOULD_FAIL = "de.busse_apps.hmintpmd.gui.SplashFragment.shouldFail";
     private static final String SIS_FINISHED = "de.busse_apps.hmintpmd.gui.SplashFragment.finished";
     private static final String SIS_FAILED = "de.busse_apps.hmintpmd.gui.SplashFragment.failed";
     private static final String ERROR_DIALOG_TAG = "de.busse_apps.hmintpmd.gui.ErrorDialogFragment";
-    
+
     private static final int NO_FAIL = -1;
-    
+
     private MainActivity mActivity;
     private TextView mBannerView;
     private Button mButtonStart;
-    
+
     private CircleMeterDrawingThread mDrawingThread;
     private CircleMeterView mProgressGraph;
-    
+
     private boolean mShouldUpdate;
     private int mShouldFail;
-    
+
     private boolean mFinished = false;
     private boolean mFailed = false;
-    
+
     private String[] mSplashMessages;
     private String[] mErrorTitles;
     private String[] mErrorMessages;
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         if (savedInstanceState != null) {
             mShouldFail = savedInstanceState.getInt(SIS_SHOULD_FAIL);
         } else {
             mShouldFail = generateFailAt();
         }
     }
-    
+
     @Override
     public View
-            onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_splash, container, false);
     }
-    
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mActivity = (MainActivity) getActivity();
-        
+
         mBannerView = (TextView) getView().findViewById(R.id.splash_banner_tv);
-        
+
         mButtonStart = (Button) getView().findViewById(R.id.splash_button_start);
         mButtonStart.setOnClickListener(new onButtonStartClickListener());
-        
+
         mProgressGraph = (CircleMeterView) getView().findViewById(R.id.splash_progress_graph);
         mProgressGraph.setMaxValue(5);
         mProgressGraph.setMaxDegree(CircleMeterView.MAX_DEGREE);
         mProgressGraph.setCallback(this);
-        
+
         mDrawingThread = mProgressGraph.getThread();
-        
+
         mSplashMessages = getResources().getStringArray(R.array.splash_messages);
         mErrorTitles = getResources().getStringArray(R.array.dialog_error_titles);
         mErrorMessages = getResources().getStringArray(R.array.dialog_error_messages);
-        
+
         if (savedInstanceState != null) {
             mDrawingThread.restoreState(savedInstanceState);
             mFinished = savedInstanceState.getBoolean(SIS_FINISHED);
@@ -104,14 +104,14 @@ public class SplashFragment extends Fragment implements CircleMeterView.CircleMe
             mDrawingThread.pause();
         }
     }
-    
+
     @Override
     public void onResume() {
         super.onResume();
         mShouldUpdate = true;
         mDrawingThread.redraw();
     }
-    
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -122,14 +122,14 @@ public class SplashFragment extends Fragment implements CircleMeterView.CircleMe
             mDrawingThread.saveState(outState);
         }
     }
-    
+
     @Override
     public void onPause() {
         super.onPause();
         mShouldUpdate = false;
         mDrawingThread.pause();
     }
-    
+
     /**
      * Callback Handler for CircleMeterCallback
      */
@@ -141,7 +141,7 @@ public class SplashFragment extends Fragment implements CircleMeterView.CircleMe
             mButtonStart.setVisibility(View.VISIBLE);
         }
     }
-    
+
     @Override
     public void onProgressUpdate(double stage, double degree) {
         if (mShouldUpdate) {
@@ -156,20 +156,20 @@ public class SplashFragment extends Fragment implements CircleMeterView.CircleMe
             }
         }
     }
-    
+
     private void showErrorDialog(int stage) {
         if (getFragmentManager().findFragmentByTag(ERROR_DIALOG_TAG) == null) {
             Bundle args = new Bundle();
             args.putString(ErrorDialogFragment.ARG_TITLE, getErrorTitleForStage(stage));
             args.putString(ErrorDialogFragment.ARG_MESSAGE, getErrorMessageForStage(stage));
-            
+
             ErrorDialogFragment errorDialogFragment = new ErrorDialogFragment();
             errorDialogFragment.setArguments(args);
             errorDialogFragment.setCancelable(false);
             errorDialogFragment.show(getFragmentManager(), ERROR_DIALOG_TAG);
         }
     }
-    
+
     private String getSplashMessageForStage(int stage) {
         if (stage < mSplashMessages.length && stage >= 0) {
             return mSplashMessages[stage];
@@ -177,7 +177,7 @@ public class SplashFragment extends Fragment implements CircleMeterView.CircleMe
             return getResources().getString(R.string.splash_banner_start);
         }
     }
-    
+
     private String getErrorTitleForStage(int stage) {
         if (stage < mErrorTitles.length && stage >= 0) {
             return mErrorTitles[stage];
@@ -185,7 +185,7 @@ public class SplashFragment extends Fragment implements CircleMeterView.CircleMe
             return getResources().getString(R.string.dialog_error_title);
         }
     }
-    
+
     private String getErrorMessageForStage(int stage) {
         if (stage < mErrorMessages.length && stage >= 0) {
             return mErrorMessages[stage];
@@ -193,15 +193,15 @@ public class SplashFragment extends Fragment implements CircleMeterView.CircleMe
             return "";
         }
     }
-    
+
     private int generateFailAt() {
-        boolean possible = (int)(Math.random() * 3) == 0 ? true : false;
+        boolean possible = (int) (Math.random() * 3) == 0;
         if (possible) {
-            return (int)(Math.random() * 4);
+            return (int) (Math.random() * 4);
         }
         return NO_FAIL;
     }
-    
+
     /**
      * View.onClickListener for Start Button
      */

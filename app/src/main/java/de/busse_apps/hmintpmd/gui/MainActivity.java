@@ -28,37 +28,37 @@ import android.view.MenuItem;
 import de.busse_apps.hmintpmd.R;
 
 public class MainActivity extends ActionBarActivity {
-    
+
     public static final String SPLASH_FRAGMENT_TAG = "de.busse_apps.hmintpmd.gui.SplashFragment";
     public static final String INPUT_FRAGMENT_TAG = "de.busse_apps.hmintpmd.gui.InputFragment";
     public static final String RESULT_FRAGMENT_TAG = "de.busse_apps.hmintpmd.gui.ResultFragment";
-    
+
     public static final String HELP_DIALOG_TAG = "de.busse_apps.hmintpmd.gui.HelpDialogFragment";
     public static final String ABOUT_DIALOG_TAG = "de.busse_apps.hmintpmd.gui.AboutDialogFragment";
-    
+
     private static final String SIS_HOME_AS_UP_ENABLED = "de.busse_apps.hmintpmd.gui.MainActivity.sisHomeAsUpEnabled";
-    
+
     private boolean homeAsUpEnabled;
-    
+
     private FragmentManager mFragmentManager;
     private ActionBar mActionBar;
-    
+
     private boolean cleanStart = true;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         mActionBar = getSupportActionBar();
         mFragmentManager = getSupportFragmentManager();
-        
+
         mFragmentManager.addOnBackStackChangedListener(new MyBackstackListener());
-        
+
         if (savedInstanceState == null) {
             homeAsUpEnabled = false;
             FragmentTransaction ft = mFragmentManager.beginTransaction();
-            
+
             SplashFragment mSplashFragment = new SplashFragment();
             ft.add(R.id.main_fragment_container, mSplashFragment, SPLASH_FRAGMENT_TAG).commit();
         } else {
@@ -67,19 +67,19 @@ public class MainActivity extends ActionBarActivity {
             setHomeAsUpEnabled(homeAsUpEnabled);
         }
     }
-    
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(SIS_HOME_AS_UP_ENABLED, homeAsUpEnabled);
         super.onSaveInstanceState(outState);
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -93,7 +93,7 @@ public class MainActivity extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    
+
     @Override
     public boolean onSupportNavigateUp() {
         if (mFragmentManager.getBackStackEntryCount() > 0) {
@@ -101,39 +101,39 @@ public class MainActivity extends ActionBarActivity {
         }
         return false;
     }
-    
+
     private void showHelp() {
         HelpDialogFragment mHelpDialogFragment = new HelpDialogFragment();
         mHelpDialogFragment.show(mFragmentManager, HELP_DIALOG_TAG);
     }
-    
+
     private void showAbout() {
         AboutDialogFragment mAboutDialogFragment = new AboutDialogFragment();
         mAboutDialogFragment.show(mFragmentManager, ABOUT_DIALOG_TAG);
     }
-    
+
     public void openInputFragment() {
         InputFragment mInputFragment = new InputFragment();
         addFragment(mInputFragment, INPUT_FRAGMENT_TAG, null);
     }
-    
+
     public void openResultFragment(double value) {
         ResultFragment resultFragment = new ResultFragment();
         Bundle args = new Bundle();
         args.putDouble(ResultFragment.ARGUMENT_VALUE, value);
         addFragment(resultFragment, RESULT_FRAGMENT_TAG, args, true);
     }
-    
-    public void setHomeAsUpEnabled(boolean enabled) {
+
+    private void setHomeAsUpEnabled(boolean enabled) {
         homeAsUpEnabled = enabled;
         mActionBar.setDisplayHomeAsUpEnabled(homeAsUpEnabled);
         mActionBar.setHomeButtonEnabled(homeAsUpEnabled);
     }
-    
+
     private void addFragment(Fragment fragment, String tag, Bundle args) {
         addFragment(fragment, tag, args, false);
     }
-    
+
     private void addFragment(Fragment fragment, String tag, Bundle args, boolean toBackStack) {
         FragmentTransaction ft = mFragmentManager.beginTransaction();
         fragment.setArguments(args);
@@ -143,20 +143,24 @@ public class MainActivity extends ActionBarActivity {
             ft.addToBackStack(tag);
         }
         ft.commit();
-        
+
         if (toBackStack) {
             setHomeAsUpEnabled(true);
         }
     }
-    
-    public boolean isCleanStart() {
-        return cleanStart;
-    }
-    
-    public void setCleanStart(boolean clean) {
-        cleanStart = clean;
-    }
-    
+
+// --Commented out by Inspection START (24.01.15 20:44):
+//    public boolean isCleanStart() {
+//        return cleanStart;
+//    }
+// --Commented out by Inspection STOP (24.01.15 20:44)
+
+// --Commented out by Inspection START (24.01.15 20:44):
+//     public void setCleanStart(boolean clean) {
+//        cleanStart = clean;
+//    }
+// --Commented out by Inspection STOP (24.01.15 20:44)
+
     /**
      * FragmentManager.OnBackStackChangedListener for handling HomeAsUp Button
      */

@@ -16,9 +16,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.busse_apps.hmintpmd"
-    android:versionCode="6"
-    android:versionName="0.6" >
+    package="de.busse_apps.hmintpmd" >
 
     <application
         android:allowBackup="true"

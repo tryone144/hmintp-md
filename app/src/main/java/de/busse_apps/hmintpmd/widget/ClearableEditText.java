@@ -24,43 +24,45 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 
-import de.busse_apps.hmintpmd.widget.TextWatcherAdapter;
-
 public class ClearableEditText extends EditText
         implements View.OnTouchListener, View.OnFocusChangeListener,
         TextWatcherAdapter.TextWatcherListener {
-    
+
     private Drawable mClearDrawable;
     private Listener mListener;
-    
+
     private OnTouchListener mOnTouchListener;
     private OnFocusChangeListener mFocusChangeListener;
-    
+
     public ClearableEditText(Context context) {
         super(context);
         init();
     }
-    
+
     public ClearableEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
-    
+
     public ClearableEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
-    
+
+    private static boolean isNotEmpty(CharSequence str) {
+        return !(str == null || str.length() == 0);
+    }
+
     @Override
     public void setOnTouchListener(OnTouchListener listener) {
         mOnTouchListener = listener;
     }
-    
+
     @Override
     public void setOnFocusChangeListener(OnFocusChangeListener listener) {
         mFocusChangeListener = listener;
     }
-    
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -76,16 +78,9 @@ public class ClearableEditText extends EditText
                 return true;
             }
         }
-        if (mOnTouchListener != null) {
-            return mOnTouchListener.onTouch(v, event);
-        }
-        return false;
+        return mOnTouchListener != null && mOnTouchListener.onTouch(v, event);
     }
-    
-    private static boolean isNotEmpty(CharSequence str) {
-        return !(str == null || str.length() == 0);
-    }
-    
+
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
@@ -97,22 +92,22 @@ public class ClearableEditText extends EditText
             mFocusChangeListener.onFocusChange(v, hasFocus);
         }
     }
-    
+
     @Override
     public void onTextChanged(EditText view, String text) {
         if (isFocused()) {
             setClearIconVisible(isNotEmpty(text));
         }
     }
-    
+
     @Override
     public void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        
+
         int drawableEdge = h - getPaddingTop() - getPaddingBottom();
         mClearDrawable.setBounds(0, 0, drawableEdge, drawableEdge);
     }
-    
+
     private void init() {
         mClearDrawable = getCompoundDrawables()[2];
         if (mClearDrawable == null) {
@@ -125,11 +120,11 @@ public class ClearableEditText extends EditText
         super.setOnFocusChangeListener(this);
         addTextChangedListener(new TextWatcherAdapter(this, this));
     }
-    
+
     public void setListener(Listener listener) {
         this.mListener = listener;
     }
-    
+
     private int getDefaultClearIconId() {
         int id = getResources().getIdentifier("ic_clear", "drawable", "android");
         if (id == 0) {
@@ -137,7 +132,7 @@ public class ClearableEditText extends EditText
         }
         return id;
     }
-    
+
     protected void setClearIconVisible(boolean visible) {
         Drawable x = visible ? mClearDrawable : null;
         setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], x,

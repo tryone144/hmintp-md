@@ -19,20 +19,22 @@ package de.busse_apps.hmintpmd.gui;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import de.busse_apps.hmintpmd.R;
 import de.busse_apps.hmintpmd.widget.MarkdownDialogFragment;
 
 public class HelpDialogFragment extends MarkdownDialogFragment {
-    
+
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        
+
         builder.setTitle(R.string.dialog_help_title);
         builder.setMessage(getMessageFromResource(R.raw.help));
         builder.setNegativeButton(R.string.dialog_close, new onButtonCloseClickListener());
-        
+
         return builder.create();
     }
 }

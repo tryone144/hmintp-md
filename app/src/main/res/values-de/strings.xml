@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2015 Bernd Busse
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,30 +21,30 @@
     <string name="menu_item_help">Hilfe</string>
     <string name="menu_item_about">Über</string>
     <string name="menu_action_share">Teilen</string>
-    
+
     <!-- SplashFragment texts -->
     <string name="splash_text_title">Wie sehr ich kacken muss Messgerät</string>
     <string name="splash_banner_start">Startup</string>
     <string name="splash_button_start">Messung durchführen!</string>
-    
+
     <!-- InputFragment texts -->
     <string name="input_label_header">Folgende Messwerte sind nötig:</string>
-    <string name="input_divider_desc"></string>
-    
+    <string name="input_divider_desc">Trenner</string>
+
     <string name="input_label_lasttime">Wann warst du das letzte mal kacken?</string>
     <string name="input_hint_lasttime">in Stunden</string>
     <string name="input_label_masseaten">Wie viel hast du seitdem gegessen?</string>
     <string name="input_hint_masseaten">in Gramm</string>
     <string name="input_label_bodymass">Wie viel wiegst du?</string>
     <string name="input_hint_bodymass">in Kilogramm</string>
-    
+
     <string name="input_button_calculate">Berechne!</string>
-    
+
     <!-- ResultFragment texts -->
     <string name="result_wait">Berechne Energiedichte&#8230;</string>
     <string name="result_empty">0.0 kDoil</string>
     <string name="result_nolevel">Da ist gar nichts!</string>
-    
+
     <!-- DialogFragment titles / Button titles -->
     <string name="dialog_help_title">Hilfe</string>
     <string name="dialog_about_title">Über</string>
@@ -60,9 +59,9 @@
     <string name="share_msg_low">Das ist %1$s.</string>
     <string name="share_msg_mid">WOW!!! %1$s</string>
     <string name="share_msg_high">Unsere unabhängige Einschätzung: \""%1$s\"</string>
-    
+
     <string name="msg_error_missing_input">Fehler: Bitte vervollständige die Angaben.</string>
-    
+
     <!-- ResultFragment level names -->
     <string-array name="result_levels">
         <item>Ungefährlich</item>
@@ -73,7 +72,7 @@
         <item>Unbeliveable shitstorm!</item>
         <item>Willst du mich verkackeiern???</item>
     </string-array>
-    
+
     <!-- SplashFragment messages -->
     <string-array name="splash_messages">
         <item>Initialisiere Messgerät&#8230;</item>
@@ -82,7 +81,7 @@
         <item>Suche Klopapier&#8230;</item>
         <item>Laden erledigt!</item>
     </string-array>
-    
+
     <!-- ErrorDialog titles -->
     <string-array name="dialog_error_titles">
         <item>Fehler 500</item>
@@ -90,7 +89,7 @@
         <item>Fehler 400</item>
         <item>Fehler 404</item>
     </string-array>
-    
+
     <!-- ErrorDialog messages -->
     <string-array name="dialog_error_messages">
         <item>Interner Laufzeitfehler!</item>

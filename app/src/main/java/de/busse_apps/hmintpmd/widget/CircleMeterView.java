@@ -16,8 +16,6 @@ package de.busse_apps.hmintpmd.widget;
  * limitations under the License.
  */
 
-import java.lang.ref.WeakReference;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
@@ -29,33 +27,35 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.lang.ref.WeakReference;
+
 import de.busse_apps.hmintpmd.R;
 
 public class CircleMeterView extends SurfaceView implements SurfaceHolder.Callback {
-    
+
     public static final int MAX_DEGREE = 360;
-    
+
     private SurfaceHolder mHolder;
     private CircleMeterData mData;
     private CircleMeterDrawingThread mThread;
-    
+
     private Rect mDrawingRect = new Rect();
-    
+
     private CircleMeterHandler mCircleMeterHandler;
     private CircleMeterCallback mCallback;
-    
+
     private Bundle mThreadState;
     private boolean isSurfaceCreated;
-    
+
     public CircleMeterView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        
+
         if (!isInEditMode()) {
             setZOrderOnTop(true);
         }
-        
+
         mData = new CircleMeterData();
-        
+
         TypedArray styled = context.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.CircleMeterView, 0, 0);
         try {
@@ -76,22 +76,22 @@ public class CircleMeterView extends SurfaceView implements SurfaceHolder.Callba
         }
         mData.maxValue = 0;
         mData.maxDegree = 0;
-        
+
         mHolder = getHolder();
         mHolder.addCallback(this);
         mHolder.setFormat(PixelFormat.TRANSPARENT);
-        
+
         mCircleMeterHandler = new CircleMeterHandler(this);
-        
+
         mThread = new CircleMeterDrawingThread(mHolder, mCircleMeterHandler, mData);
-        
+
         isSurfaceCreated = false;
     }
-    
+
     public CircleMeterDrawingThread getThread() {
         return mThread;
     }
-    
+
     public void setCallback(Object callback) {
         try {
             mCallback = (CircleMeterCallback) callback;
@@ -100,110 +100,104 @@ public class CircleMeterView extends SurfaceView implements SurfaceHolder.Callba
                     + " must implement CircleMeterCallback!");
         }
     }
-    
+
+    public int getDegreePerSecond() {
+        return mData.degreePerSecond;
+    }
+
     public void setDegreePerSecond(int speed) {
         mData.degreePerSecond = speed;
         restartThread();
     }
-    
-    public int getDegreePerSecond() {
-        return mData.degreePerSecond;
+
+    public int getArcWidth() {
+        return mData.arcWidth;
     }
-    
+
     public void setArcWidth(int width) {
         mData.arcWidth = width;
         restartThread();
     }
-    
-    public int getArcWidth() {
-        return mData.arcWidth;
+
+    public int getBorderWidth() {
+        return mData.borderWidth;
     }
-    
+
     public void setBorderWidth(int width) {
         mData.borderWidth = width;
         restartThread();
     }
-    
-    public int getBorderWidth() {
-        return mData.borderWidth;
+
+    public double getMaxValue() {
+        return mData.maxValue;
     }
-    
+
     public void setMaxValue(double value) {
         mData.maxValue = value;
         restartThread();
     }
-    
-    public double getMaxValue() {
-        return mData.maxValue;
+
+    public double getMaxDegree() {
+        return mData.maxDegree;
     }
-    
+
     public void setMaxDegree(double degree) {
         mData.maxDegree = degree;
         restartThread();
     }
-    
-    public double getMaxDegree() {
-        return mData.maxDegree;
-    }
-    
-    public void setColorLow(int color) {
-        mData.colorLow = color;
-    }
-    
+
     public int getColorLow() {
         return mData.colorLow;
     }
-    
-    public void setColorMid(int color) {
-        mData.colorMid = color;
+
+    public void setColorLow(int color) {
+        mData.colorLow = color;
     }
-    
+
     public int getColorMid() {
         return mData.colorMid;
     }
-    
-    public void setColorHi(int color) {
-        mData.colorHi = color;
+
+    public void setColorMid(int color) {
+        mData.colorMid = color;
     }
-    
+
     public int getColorHi() {
         return mData.colorHi;
     }
-    
+
+    public void setColorHi(int color) {
+        mData.colorHi = color;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // We are allowed to change the view's width
-        boolean resizeWidth = false;
-        
-        // We are allowed to change the view's height
-        boolean resizeHeight = false;
-        
         int width = Integer.MAX_VALUE;
         int height = Integer.MAX_VALUE;
-        
+
         int widthSize;
         int heightSize;
-        
+
         final int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
         final int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
-        
-        resizeWidth = widthSpecMode != MeasureSpec.EXACTLY;
-        resizeHeight = heightSpecMode != MeasureSpec.EXACTLY;
-        
+
+        boolean resizeWidth = widthSpecMode != MeasureSpec.EXACTLY;
+        boolean resizeHeight = heightSpecMode != MeasureSpec.EXACTLY;
+
         if (resizeWidth || resizeHeight) {
             // We may change at least one Dimension
-            
+
             // Get the max possible width/height given our constraints
             widthSize = resolveSize(Integer.MAX_VALUE, widthMeasureSpec);
             heightSize = resolveSize(Integer.MAX_VALUE, heightMeasureSpec);
-            
+
             // See what our actual aspect ratio is
             float actualAspect = (float) (widthSize - getPaddingLeft() - getPaddingRight())
                     / (heightSize - getPaddingTop() - getPaddingBottom());
-            
+
             if (Math.abs(actualAspect - 1.0f) > 0.0000001) {
                 boolean done = false;
-                
+
                 // Try adjusting width to be proportional to height
                 if (resizeWidth) {
                     int newWidth = heightSize - getPaddingTop() - getPaddingBottom()
@@ -239,20 +233,20 @@ public class CircleMeterView extends SurfaceView implements SurfaceHolder.Callba
             widthSize = resolveSize(width, widthMeasureSpec);
             heightSize = resolveSize(height, heightMeasureSpec);
         }
-        
+
         setMeasuredDimension(widthSize, heightSize);
     }
-    
+
     private void configureBounds() {
         int padding = mData.borderWidth + mData.arcWidth / 2;
         int left = getPaddingLeft() + padding;
         int top = getPaddingTop() + padding;
         int right = getPaddingRight() + padding;
         int bottom = getPaddingBottom() + padding;
-        
+
         int width = getWidth() - left - right;
         int height = getHeight() - top - bottom;
-        
+
         if (width >= height) {
             int diff = (width - height) / 2;
             bottom = height + top;
@@ -264,10 +258,10 @@ public class CircleMeterView extends SurfaceView implements SurfaceHolder.Callba
             bottom = height + top - diff;
             top = top + diff;
         }
-        
+
         mDrawingRect.set(left, top, right, bottom);
     }
-    
+
     private int resolveAdjustedSize(int desiredSize, int maxSize, int measureSpec) {
         int result = desiredSize;
         int specMode = MeasureSpec.getMode(measureSpec);
@@ -291,27 +285,27 @@ public class CircleMeterView extends SurfaceView implements SurfaceHolder.Callba
         }
         return result;
     }
-    
+
     private void doDrawingFinished() {
         if (mCallback != null) {
             mCallback.onDrawingFinished();
         }
     }
-    
+
     private void doProgressUpdate(double value, double degree) {
         if (mCallback != null) {
             mCallback.onProgressUpdate(value, degree);
         }
     }
-    
+
     private void restartThread() {
         if (mThread.isRunning()) {
             mThread.pause();
             mThreadState = mThread.saveState(new Bundle());
         }
-        
+
         mThread = new CircleMeterDrawingThread(mHolder, mCircleMeterHandler, mData);
-        
+
         if (mThreadState != null) {
             mThread.restoreState(mThreadState);
         }
@@ -320,14 +314,14 @@ public class CircleMeterView extends SurfaceView implements SurfaceHolder.Callba
             mThread.start();
         }
     }
-    
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         configureBounds();
         mThread.setDrawingBounds(mDrawingRect);
         mThread.redraw();
     }
-    
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         isSurfaceCreated = true;
@@ -337,34 +331,34 @@ public class CircleMeterView extends SurfaceView implements SurfaceHolder.Callba
         if (mThreadState != null) {
             mThread.restoreState(mThreadState);
         }
-        
+
         mThread.setRunning(true);
         mThread.start();
     }
-    
+
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         isSurfaceCreated = false;
         boolean retry = true;
         mThread.setRunning(false);
-        
+
         mThreadState = mThread.saveState(new Bundle());
-        
+
         while (retry) {
             try {
                 mThread.join();
                 retry = false;
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
         }
     }
-    
+
     /**
      * public Interface for callback actions
      */
     public interface CircleMeterCallback {
         public void onDrawingFinished();
-        
+
         public void onProgressUpdate(double value, double degree);
     }
 
@@ -375,16 +369,16 @@ public class CircleMeterView extends SurfaceView implements SurfaceHolder.Callba
         public static final String KEY_EVENT = "de.busse_apps.hmintpmd.common.CircleMeterView.CircleMeterHandler.eventType";
         public static final String KEY_VALUE = "de.busse_apps.hmintpmd.common.CircleMeterView.CircleMeterHandler.value";
         public static final String KEY_DEGREE = "de.busse_apps.hmintpmd.common.CircleMeterView.CircleMeterHandler.degree";
-        
+
         public static final int EVENT_FINISHED = 1;
         public static final int EVENT_UPDATE = 2;
-        
+
         private final WeakReference<CircleMeterView> mCircleMeterView;
-        
+
         public CircleMeterHandler(CircleMeterView view) {
-            mCircleMeterView = new WeakReference<CircleMeterView>(view);
+            mCircleMeterView = new WeakReference<>(view);
         }
-        
+
         @Override
         public void handleMessage(Message m) {
             CircleMeterView view = mCircleMeterView.get();
@@ -404,18 +398,18 @@ public class CircleMeterView extends SurfaceView implements SurfaceHolder.Callba
             }
         }
     }
-    
+
     /**
-     * public DataHolder for easy use of SavedInstanceState Bundle 
+     * public DataHolder for easy use of SavedInstanceState Bundle
      */
     public class CircleMeterData {
-        
+
         public double maxValue;
         public double maxDegree;
         public int degreePerSecond;
         public int arcWidth;
         public int borderWidth;
-        
+
         public int colorLow;
         public int colorMid;
         public int colorHi;
