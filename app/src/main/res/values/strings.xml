@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright 2015 Bernd Busse
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +26,7 @@
     <!-- SplashFragment texts -->
     <string name="splash_text_title">How much I need to poop measuring device</string>
     <string name="splash_banner_start">Startup</string>
-    <string name="splash_button_start">Start Meassure!</string>
+    <string name="splash_button_start">Start Measure!</string>
 
     <!-- InputFragment texts -->
     <string name="input_label_header">Following data is necessary:</string>
@@ -34,9 +35,9 @@
     <string name="input_label_lasttime">How long ago did you poop?</string>
     <string name="input_hint_lasttime">in hours</string>
     <string name="input_label_masseaten">How much did you eat?</string>
-    <string name="input_hint_masseaten">in gramm</string>
+    <string name="input_hint_masseaten">in gram</string>
     <string name="input_label_bodymass">How much do you weight?</string>
-    <string name="input_hint_bodymass">in kilogramm</string>
+    <string name="input_hint_bodymass">in kilogram</string>
 
     <string name="input_button_calculate">Calculate!</string>
 
@@ -55,8 +56,8 @@
 
     <!-- ShareAction texts -->
     <string name="share_name">How much I need to poop</string>
-    <string name="share_msg_value">Meassured the need to poop of about %1$s kDoil.</string>
-    <string name="share_msg_low">Thats %1$s.</string>
+    <string name="share_msg_value">Measured the need to poop of about %1$s kDoil.</string>
+    <string name="share_msg_low">That's %1$s.</string>
     <string name="share_msg_mid">WOW!!! %1$s</string>
     <string name="share_msg_high">Our independent assessment: \"%1$s\"</string>
 
@@ -69,7 +70,7 @@
         <item>Really big turd!</item>
         <item>Fasten your seatbelts!</item>
         <item>Analdetonation!!!</item>
-        <item>Unbeliveable shitstorm!</item>
+        <item>Unbelievable shitstorm!</item>
         <item>Are you kidding me???</item>
     </string-array>
 

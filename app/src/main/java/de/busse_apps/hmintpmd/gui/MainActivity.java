@@ -38,12 +38,10 @@ public class MainActivity extends ActionBarActivity {
 
     private static final String SIS_HOME_AS_UP_ENABLED = "de.busse_apps.hmintpmd.gui.MainActivity.sisHomeAsUpEnabled";
 
-    private boolean homeAsUpEnabled;
-
     private FragmentManager mFragmentManager;
     private ActionBar mActionBar;
 
-    private boolean cleanStart = true;
+    private boolean homeAsUpEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +60,6 @@ public class MainActivity extends ActionBarActivity {
             SplashFragment mSplashFragment = new SplashFragment();
             ft.add(R.id.main_fragment_container, mSplashFragment, SPLASH_FRAGMENT_TAG).commit();
         } else {
-            cleanStart = false;
             homeAsUpEnabled = savedInstanceState.getBoolean(SIS_HOME_AS_UP_ENABLED);
             setHomeAsUpEnabled(homeAsUpEnabled);
         }
@@ -84,10 +81,10 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_help:
-                showHelp();
+                showHelpDialog();
                 return true;
             case R.id.menu_item_about:
-                showAbout();
+                showAboutDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -102,12 +99,12 @@ public class MainActivity extends ActionBarActivity {
         return false;
     }
 
-    private void showHelp() {
+    private void showHelpDialog() {
         HelpDialogFragment mHelpDialogFragment = new HelpDialogFragment();
         mHelpDialogFragment.show(mFragmentManager, HELP_DIALOG_TAG);
     }
 
-    private void showAbout() {
+    private void showAboutDialog() {
         AboutDialogFragment mAboutDialogFragment = new AboutDialogFragment();
         mAboutDialogFragment.show(mFragmentManager, ABOUT_DIALOG_TAG);
     }
@@ -148,18 +145,6 @@ public class MainActivity extends ActionBarActivity {
             setHomeAsUpEnabled(true);
         }
     }
-
-// --Commented out by Inspection START (24.01.15 20:44):
-//    public boolean isCleanStart() {
-//        return cleanStart;
-//    }
-// --Commented out by Inspection STOP (24.01.15 20:44)
-
-// --Commented out by Inspection START (24.01.15 20:44):
-//     public void setCleanStart(boolean clean) {
-//        cleanStart = clean;
-//    }
-// --Commented out by Inspection STOP (24.01.15 20:44)
 
     /**
      * FragmentManager.OnBackStackChangedListener for handling HomeAsUp Button

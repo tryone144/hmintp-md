@@ -30,10 +30,11 @@ import de.busse_apps.hmintpmd.widget.CircleMeterView;
 
 public class SplashFragment extends Fragment implements CircleMeterView.CircleMeterCallback {
 
+    private static final String ERROR_DIALOG_TAG = "de.busse_apps.hmintpmd.gui.ErrorDialogFragment";
+
     private static final String SIS_SHOULD_FAIL = "de.busse_apps.hmintpmd.gui.SplashFragment.shouldFail";
     private static final String SIS_FINISHED = "de.busse_apps.hmintpmd.gui.SplashFragment.finished";
     private static final String SIS_FAILED = "de.busse_apps.hmintpmd.gui.SplashFragment.failed";
-    private static final String ERROR_DIALOG_TAG = "de.busse_apps.hmintpmd.gui.ErrorDialogFragment";
 
     private static final int NO_FAIL = -1;
 
@@ -41,11 +42,11 @@ public class SplashFragment extends Fragment implements CircleMeterView.CircleMe
     private TextView mBannerView;
     private Button mButtonStart;
 
-    private CircleMeterDrawingThread mDrawingThread;
     private CircleMeterView mProgressGraph;
+    private CircleMeterDrawingThread mDrawingThread;
 
     private boolean mShouldUpdate;
-    private int mShouldFail;
+    private int mShouldFail = NO_FAIL;
 
     private boolean mFinished = false;
     private boolean mFailed = false;
@@ -66,8 +67,7 @@ public class SplashFragment extends Fragment implements CircleMeterView.CircleMe
     }
 
     @Override
-    public View
-    onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_splash, container, false);
     }
 
@@ -88,14 +88,15 @@ public class SplashFragment extends Fragment implements CircleMeterView.CircleMe
 
         mDrawingThread = mProgressGraph.getThread();
 
-        mSplashMessages = getResources().getStringArray(R.array.splash_messages);
-        mErrorTitles = getResources().getStringArray(R.array.dialog_error_titles);
-        mErrorMessages = getResources().getStringArray(R.array.dialog_error_messages);
-
         if (savedInstanceState != null) {
             mDrawingThread.restoreState(savedInstanceState);
             mFinished = savedInstanceState.getBoolean(SIS_FINISHED);
             mFailed = savedInstanceState.getBoolean(SIS_FAILED);
+        }
+        if (mShouldFail != NO_FAIL) {
+            mSplashMessages = getResources().getStringArray(R.array.splash_messages);
+            mErrorTitles = getResources().getStringArray(R.array.dialog_error_titles);
+            mErrorMessages = getResources().getStringArray(R.array.dialog_error_messages);
         }
         if (mFinished) {
             mDrawingThread.complete();
@@ -108,8 +109,10 @@ public class SplashFragment extends Fragment implements CircleMeterView.CircleMe
     @Override
     public void onResume() {
         super.onResume();
-        mShouldUpdate = true;
-        mDrawingThread.redraw();
+        if (!mFailed) {
+            mShouldUpdate = true;
+            mDrawingThread.redraw();
+        }
     }
 
     @Override

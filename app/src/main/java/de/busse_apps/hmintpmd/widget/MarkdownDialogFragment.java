@@ -51,9 +51,7 @@ public abstract class MarkdownDialogFragment extends DialogFragment {
         }
 
         Bypass bypass = new Bypass(getActivity());
-        CharSequence mdMessage = bypass.markdownToSpannable(rawMessage);
-
-        return mdMessage;
+        return bypass.markdownToSpannable(rawMessage);
     }
 
     public class onButtonCloseClickListener implements DialogInterface.OnClickListener {
