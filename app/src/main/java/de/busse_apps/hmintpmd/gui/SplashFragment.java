@@ -88,15 +88,16 @@ public class SplashFragment extends Fragment implements CircleMeterView.CircleMe
 
         mDrawingThread = mProgressGraph.getThread();
 
+        mSplashMessages = getResources().getStringArray(R.array.splash_messages);
+        if (mShouldFail != NO_FAIL) {
+            mErrorTitles = getResources().getStringArray(R.array.dialog_error_titles);
+            mErrorMessages = getResources().getStringArray(R.array.dialog_error_messages);
+        }
+
         if (savedInstanceState != null) {
             mDrawingThread.restoreState(savedInstanceState);
             mFinished = savedInstanceState.getBoolean(SIS_FINISHED);
             mFailed = savedInstanceState.getBoolean(SIS_FAILED);
-        }
-        if (mShouldFail != NO_FAIL) {
-            mSplashMessages = getResources().getStringArray(R.array.splash_messages);
-            mErrorTitles = getResources().getStringArray(R.array.dialog_error_titles);
-            mErrorMessages = getResources().getStringArray(R.array.dialog_error_messages);
         }
         if (mFinished) {
             mDrawingThread.complete();

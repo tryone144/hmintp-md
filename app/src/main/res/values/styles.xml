@@ -33,13 +33,13 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
-    <style name="TextAppearence.Header" parent="@android:style/TextAppearance.Large">
+    <style name="TextAppearence.Header" parent="@style/TextAppearance.AppCompat.Large">
         <item name="android:textSize">@dimen/result_header_size</item>
         <item name="android:lines">2</item>
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="TextAppearence.Result" parent="@android:style/TextAppearance.Large">
+    <style name="TextAppearence.Result" parent="@style/TextAppearance.AppCompat.Large">
         <item name="android:textSize">@dimen/result_value_size</item>
         <item name="android:lines">1</item>
         <item name="android:gravity">center</item>
