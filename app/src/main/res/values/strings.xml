@@ -57,7 +57,7 @@
     <!-- ShareAction texts -->
     <string name="share_name">How much I need to poop</string>
     <string name="share_msg_value">Measured the need to poop of about %1$s kDoil.</string>
-    <string name="share_msg_low">That's %1$s.</string>
+    <string name="share_msg_low">That\'s %1$s.</string>
     <string name="share_msg_mid">WOW!!! %1$s</string>
     <string name="share_msg_high">Our independent assessment: \"%1$s\"</string>
 
